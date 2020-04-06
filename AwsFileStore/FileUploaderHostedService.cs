@@ -1,7 +1,10 @@
 ﻿using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
+using Domain;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 using System.IO;
@@ -12,24 +15,26 @@ namespace AwsFileStore
 {
     public class FileUploaderHostedService : IHostedService
     {
-        //TODO: make configurations for all these
-        private const string bucketName = "";
-        private const string keyName = "";
-        private const string filePath = "";
-        private const string awsAccessKeyId = "";
-        private const string awsSecretAccessKey = "";
-
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USEast2;
         private static IAmazonS3 s3Client;
 
+        private readonly IConfiguration _configuration;
+        private static UploadFileConfiguration _uploadConfig;
+        private static AwsS3Configuration _awsConfig;
 
-        public FileUploaderHostedService()
+        public FileUploaderHostedService(IConfiguration configuration, 
+            IOptions<UploadFileConfiguration> uploadConfig, 
+            IOptions<AwsS3Configuration> awsConfig)
         {
+            _configuration = configuration;
+            _uploadConfig = uploadConfig.Value;
+            _awsConfig = awsConfig.Value;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            var regionEndpoint = RegionEndpoint.GetBySystemName(_awsConfig.RegionEndpoint);
+
+            s3Client = new AmazonS3Client(_awsConfig.AwsAccessKeyId, _awsConfig.AwsSecretAccessKey, regionEndpoint);
 
             UploadFileAsync().Wait();
 
@@ -43,7 +48,7 @@ namespace AwsFileStore
             return Task.CompletedTask;
         }
 
-        private static async Task UploadFileAsync()
+        private async Task UploadFileAsync()
         {
             try
             {
@@ -55,26 +60,26 @@ namespace AwsFileStore
                 //Console.WriteLine("Upload 1 completed");
 
                 // Option 2. Specify object key name explicitly.
-                await fileTransferUtility.UploadAsync(filePath, bucketName, keyName);
+                await fileTransferUtility.UploadAsync(_uploadConfig.FileLocation, _awsConfig.BucketName, _awsConfig.KeyName);
                 Console.WriteLine("Upload 2 completed");
 
                 // Option 3. Upload data from a type of System.IO.Stream.
                 using (var fileToUpload =
-                    new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    new FileStream(_uploadConfig.FileLocation, FileMode.Open, FileAccess.Read))
                 {
                     await fileTransferUtility.UploadAsync(fileToUpload,
-                                               bucketName, keyName);
+                                               _awsConfig.BucketName, _awsConfig.KeyName);
                 }
                 Console.WriteLine("Upload 3 completed");
 
                 // Option 4. Specify advanced settings.
                 var fileTransferUtilityRequest = new TransferUtilityUploadRequest
                 {
-                    BucketName = bucketName,
-                    FilePath = filePath,
+                    BucketName = _awsConfig.BucketName,
+                    FilePath = _uploadConfig.FileLocation,
                     StorageClass = S3StorageClass.StandardInfrequentAccess,
                     PartSize = 6291456, // 6 MB.
-                    Key = keyName,
+                    Key = _awsConfig.KeyName,
                     CannedACL = S3CannedACL.PublicRead
                 };
                 fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
