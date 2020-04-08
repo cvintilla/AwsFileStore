@@ -3,6 +3,7 @@ using Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using System;
 using System.IO;
 using System.Reflection;
@@ -30,9 +31,9 @@ namespace AwsFileStore
         public static IHost CreateGenericHost(string basePath)
         {
             var logger = new LoggerConfiguration()
-             .MinimumLevel.Debug()
-             .WriteTo.Console()
-             .WriteTo.File("C:\\logs\\FileStoreApp\\log.txt", rollingInterval: RollingInterval.Minute)
+             .MinimumLevel.Verbose()
+             .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+             .WriteTo.File("C:\\logs\\FileStoreApp\\.txt", rollingInterval: RollingInterval.Minute)
              .CreateLogger();
 
             Log.Logger = logger;

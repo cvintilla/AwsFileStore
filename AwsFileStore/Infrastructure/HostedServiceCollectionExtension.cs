@@ -11,7 +11,8 @@ namespace AwsFileStore.Infrastructure
     {
         public static IServiceCollection AddHostedService(this IServiceCollection services)
         {
-            services.AddHostedService<FileUploaderHostedService>();
+            services.AddHostedService<S3ManagerHostedService>();
+
             return services;
         }
     }

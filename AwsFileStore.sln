@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsFileStore", "AwsFileStore\AwsFileStore.csproj", "{2F37B492-EEFA-414C-889E-DD66FB187D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{C6F823C0-BAA3-4189-9C96-62E2BE3F6E13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{C6F823C0-BAA3-4189-9C96-62E2BE3F6E13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{2BD13647-21B6-493D-AA2F-B807BA453FFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C6F823C0-BAA3-4189-9C96-62E2BE3F6E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F823C0-BAA3-4189-9C96-62E2BE3F6E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F823C0-BAA3-4189-9C96-62E2BE3F6E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BD13647-21B6-493D-AA2F-B807BA453FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BD13647-21B6-493D-AA2F-B807BA453FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BD13647-21B6-493D-AA2F-B807BA453FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BD13647-21B6-493D-AA2F-B807BA453FFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

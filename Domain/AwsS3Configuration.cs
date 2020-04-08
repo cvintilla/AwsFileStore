@@ -1,17 +1,8 @@
-﻿using Amazon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain
+﻿namespace Domain
 {
     public class AwsS3Configuration
     {
         public string BucketName { get; set; }
-
-        public string KeyName { get; set; }
 
         public string AwsAccessKeyId { get; set; }
 

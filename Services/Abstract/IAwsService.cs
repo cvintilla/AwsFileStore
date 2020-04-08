@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AwsFileStore.Services.Abstract
+namespace Services.Abstract
 {
-    public interface IUploadFileService
+    public interface IAwsService
     {
-        
+        Task<List<string>> UploadAsync(List<string> files);
     }
 }
